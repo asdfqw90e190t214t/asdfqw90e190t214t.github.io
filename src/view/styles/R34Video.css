@@ -1,0 +1,13 @@
+.r34video {
+    height: fit-content;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.r34video video {
+    z-index: 0;
+    width: 72vw;
+    height: 72vh;
+    border: 2px solid black;
+    box-shadow: 0 0 1vw 0.1vw black;
+}

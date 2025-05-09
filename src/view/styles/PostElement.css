@@ -1,0 +1,60 @@
+.r34video{
+    width: 70vw;
+    height: 70vh;
+}
+
+.r34image {
+    display: table;
+    margin: 0 auto;
+    width: 70vw;
+    height: fit-content;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+    .r34image .tags {
+        width: 10vw;
+        height: min-content;
+        max-height: 33vh;
+        overflow-y: scroll;
+        padding: 1vw 1vw 2vw 1vw;
+        border-radius: 2vw;
+        right: 0;
+        display: inline-flex;
+        flex-wrap: wrap;
+        color: white;
+        width: fit-content;
+        max-width: 50vw;
+        margin: 1vw auto;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5vw;
+        background-color: #121212;
+        box-shadow: 0 0 .25vw .25vw #000000;
+    }
+
+        .r34image .tags .tag {
+            font-family: Consolas;
+            padding: 0.25vw .5vw;
+            margin: 0.33vw 0.5vw;
+            border-radius: 1vw;
+            background-color: var(--r34image-tag-bg);
+            box-shadow: 0 0 .25vw .2vw black;
+        }
+
+            .r34image .tags .tag:hover {
+                background-color: var(--r34image-tag-bg-hover);
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            .r34image .tags .tag[data-present="true"] {
+                background-color: var(--r34image-tag-bg-present) !important;
+            }
+
+                .r34image .tags .tag[data-present="true"]:hover {
+                    background-color: var(--r34image-tag-bg-present-hover) !important;
+                }

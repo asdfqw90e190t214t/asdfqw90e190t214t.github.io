@@ -1,0 +1,15 @@
+.tag_suggestion {
+    width: stretch;
+    margin: .5vw;
+    background-color: #303030;
+    box-shadow: 0 0 .5vw 0 black;
+    border-radius: .5vw;
+    text-indent: .5vw;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    .tag_suggestion:hover {
+        background-color: #262626;
+        font-weight: 700;
+    }

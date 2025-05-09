@@ -1,0 +1,150 @@
+#search_container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 40vw;
+    margin: 3vw auto 5vw auto;
+    border-radius: 1vw;
+    background-color: #001a40;
+}
+
+    #search_container #postcount {
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.67rem;
+    }
+
+    #search_container #autocomplete {
+        z-index: 1;
+        position: absolute;
+        display: grid;
+        background-color: #001635;
+        width: 25vw;
+        margin-left: 5.25vw;
+        margin-top: -.6vw;
+        min-height: 5vw;
+        border-radius: 1vw;
+        padding: .67vw;
+    }
+
+        #search_container #autocomplete .auto_tag {
+            color: white;
+            background-color: #000917;
+            padding: .3vw .6vw;
+            border-radius: .5vw;
+            margin-bottom: .2vw;
+        }
+
+            #search_container #autocomplete .auto_tag:hover {
+                cursor: pointer;
+                background-color: #020d1e;
+                text-shadow: 0 0 2px white;
+            }
+
+        #search_container #autocomplete #loading_spinner {
+            border: .5vw solid rgba(0, 0, 0, 0.1);
+            border-top: .5vw solid #007bff;
+            border-radius: 2vw;
+            width: 2vw;
+            height: 2vw;
+            animation: spin 1s linear infinite;
+            margin: 1vw auto;
+        }
+
+    #search_container #nav_buttons {
+        margin: 0 auto;
+        margin-bottom: 1vw;
+        width: fit-content;
+        display: flex;
+    }
+
+        #search_container #nav_buttons button {
+            all: unset;
+            font-weight: 500;
+            background-color: #00235b;
+            border-radius: 1vw;
+            width: 2.5vw;
+            height: 2vw;
+            text-align: center;
+        }
+
+            #search_container #nav_buttons button:first-child {
+                margin-right: 30vw;
+            }
+
+            #search_container #nav_buttons button:hover {
+                background-color: #003282;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+    #search_container #input_area {
+        all: unset;
+        display: inline-flex;
+        width: 40vw;
+        border-radius: 2vw;
+        overflow: hidden;
+        align-items: center;
+        color: white;
+    }
+
+        #search_container #input_area #include,
+        #search_container #input_area #search {
+            all: inherit;
+            border-radius: unset;
+            background-color: #033380;
+            padding: .4vw .7vw;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 2vw;
+            margin: 1vw;
+        }
+
+        #search_container #input_area #include {
+            width: 2vw;
+        }
+
+        #search_container #input_area #search {
+            width: 5vw;
+        }
+
+            #search_container #input_area #search:hover,
+            #search_container #input_area #include:hover {
+                background-color: #003b9b;
+                font-weight: 700;
+            }
+
+        #search_container #input_area #search_input {
+            all: inherit;
+            border-radius: unset;
+            width: 33vw;
+            padding: .4vw .7vw;
+            text-shadow: 0 0 1px black;
+            background-color: #00112a;
+            z-index: 1;
+            text-indent: 2%;
+            border-radius: 2vw;
+            z-index: 2;
+        }
+
+            #search_container #input_area #search_input:focus {
+                background-color: #00193d;
+            }
+
+            #search_container #input_area #search_input:hover {
+                background-color: #001f4b;
+            }
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

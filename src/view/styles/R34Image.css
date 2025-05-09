@@ -1,0 +1,45 @@
+#posts .r34image {
+    display: table;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    height: fit-content;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    margin-left: 10vw;
+}
+
+    #posts .r34image img {
+        display: flex;
+        max-height: 70vh;
+        max-width: 70vw;
+        border: 2px solid black;
+        border-radius: 1vw;
+        box-shadow: 0 0 1vw 0.1vw black;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+    }
+
+.zoomimgcontainer {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    padding: 50px;
+    border: 1px solid #00adb7;
+    border-radius: 15px;
+    width: 100vw;
+    height: 100vh;
+}
+
+    .zoomimgcontainer:hover {
+        box-shadow: 0 14px 24px rgba(0, 0, 0, 0.55), 0 14px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .zoomimgcontainer .target{
+        position: absolute;
+    }
+

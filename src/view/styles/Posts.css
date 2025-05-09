@@ -1,0 +1,77 @@
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
+#posts {
+    height: max-content;
+    width: 100vw;
+    justify-content: center;
+}
+
+    #posts .r34media .tags {
+        overflow-y: scroll;
+        padding: 1vw;
+        border-radius: 1vw;
+        flex-wrap: wrap;
+        color: white;
+        width: 50vw;
+        margin: 1vw auto;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 3vw;
+        background-color: #000d2e;
+        max-height: 21vh;
+    }
+
+        #posts .r34media .tags .tag {
+            font-family: Consolas;
+            padding: 0.25vw .5vw;
+            margin: 0.33vw 0.5vw;
+            border-radius: .5vw;
+            background-color: #002dad;
+            box-shadow: 0 0 .25vw .2vw black;
+        }
+
+            #posts .r34media .tags .tag:hover {
+                background-color: #001b67;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            #posts .r34media .tags .tag[data-present="included"] {
+                background-color: #004409 !important;
+            }
+
+                #posts .r34media .tags .tag[data-present="included"]:hover {
+                    background-color: #001f04 !important;
+                }
+
+            #posts .r34media .tags .tag[data-present="excluded"] {
+                background-color: #b50000 !important;
+            }
+
+                #posts .r34media .tags .tag[data-present="excluded"]:hover {
+                    background-color: #800000 !important;
+                }
+
+.include_button {
+    position: fixed;
+    display: flex;
+    width: 3vw;
+    height: 3vw;
+    background-color: green;
+    top: 93vh;
+    left: 1vw;
+    border-radius: 1vw;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 2vw;
+    background-color: #0038d3;
+    cursor: pointer;
+}
+
+    .include_button:hover {
+        background-color: #0044ff;
+    }
