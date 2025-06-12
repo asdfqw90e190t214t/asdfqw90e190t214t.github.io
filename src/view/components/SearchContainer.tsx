@@ -49,7 +49,7 @@ export default function SearchContainer() {
 
   const handleKeyUp = async (evt: KeyboardEvent) => {
     if (evt.key === 'Enter') {
-      const tag = await handler.getTag((evt.target as HTMLInputElement).value.replaceAll(" ", "_"));
+      const tag = await handler.getTag((evt.target as HTMLInputElement).value.replaceAll(' ', '_'));
       if (!tag) {
         return;
       }

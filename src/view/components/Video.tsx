@@ -16,7 +16,7 @@ export default function Video(props: {
   // Destructuring
   const { onClick, post, fs, idx } = props;
   const { isFs, posts, getMorePosts, volume, setVolume } = useContext(PostContext);
-  const [fileUrl] = useState<string>(post.file_url);
+  const [fileUrl, setFileUrl] = useState<string>(post.file_url);
   const videoRef = createRef<HTMLVideoElement>();
 
   const [played, setPlayed] = useState<boolean>(false);
@@ -44,6 +44,12 @@ export default function Video(props: {
       entryPause.target.pause();
     }
   }, [inViewPause, entryPause]);
+
+  useEffect(() => {
+    urlTimeoutRef.current = setTimeout(() => {
+      setFileUrl(prev => prev.replace('us.', 'api-cdn-mp4.'));
+    }, 1500);
+  });
 
   useEffect(() => {
     if (inView && idx >= posts.length - 4) {
