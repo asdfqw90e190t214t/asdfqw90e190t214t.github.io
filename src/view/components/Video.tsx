@@ -49,7 +49,7 @@ export default function Video(props: {
     urlTimeoutRef.current = setTimeout(() => {
       setFileUrl(prev => prev.replace('us.', 'api-cdn-mp4.'));
     }, 1500);
-  });
+  }, [urlTimeoutRef]);
 
   useEffect(() => {
     if (inView && idx >= posts.length - 4) {

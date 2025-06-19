@@ -3,7 +3,7 @@ import '../styles/R34Image.css';
 import Post from '../../model/Post';
 import { PostContext } from './Posts';
 
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 export default function Image(props: {
@@ -19,11 +19,21 @@ export default function Image(props: {
     threshold: 0.6,
   });
 
+  const [fileUrl, setFileUrl] = useState<string>(post.file_url);
+
+  const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     if (inView && idx >= posts.length - 4) {
       getMorePosts();
     }
   }, [inView, posts, getMorePosts, idx]);
+
+  useEffect(() => {
+    urlTimeoutRef.current = setTimeout(() => {
+      setFileUrl(prev => prev.replace('us.', 'api-cdn-mp4.'));
+    }, 1500);
+  }, [urlTimeoutRef]);
 
   if (fs) {
     return (
@@ -36,8 +46,9 @@ export default function Image(props: {
         key={post.id}
         loading="eager"
         alt={post.tags}
-        src={post.file_url}
+        src={fileUrl}
         id={`id_${String(post.id)}`}
+        onLoadedData={() => clearTimeout(urlTimeoutRef.current ?? undefined)}
       />
     );
   }
@@ -52,7 +63,8 @@ export default function Image(props: {
         alt={post.tags}
         onClick={onClick}
         id={`id_${String(post.id)}`}
-        src={post.file_url}
+        src={fileUrl}
+        onLoadedData={() => clearTimeout(urlTimeoutRef.current ?? undefined)}
       />
       {props.tags}
     </div>
