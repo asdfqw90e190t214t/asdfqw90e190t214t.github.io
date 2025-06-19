@@ -19,7 +19,7 @@ export default function Image(props: {
     threshold: 0.6,
   });
 
-  const [fileUrl, setFileUrl] = useState<string>(post.file_url);
+  const [fileUrl, setFileUrl] = useState<string>(post.file_url.replace('api-cdn.', 'us.'));
 
   const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -31,7 +31,7 @@ export default function Image(props: {
 
   useEffect(() => {
     urlTimeoutRef.current = setTimeout(() => {
-      setFileUrl(prev => prev.replace('us.', 'api-cdn-mp4.'));
+      setFileUrl(prev => prev.replace('us.', 'api-cdn.'));
     }, 1500);
   }, [urlTimeoutRef]);
 
