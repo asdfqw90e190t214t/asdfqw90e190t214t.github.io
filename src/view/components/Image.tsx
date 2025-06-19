@@ -19,9 +19,9 @@ export default function Image(props: {
     threshold: 0.6,
   });
 
-  const [fileUrl, setFileUrl] = useState<string>(post.file_url.replace('api-cdn.', 'us.'));
+  const [fileUrl, setFileUrl] = useState<string>(post.file_url.replace('api-cdn', 'us'));
 
-  const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const urlTimeoutRef = useRef<NodeJS.Timeout>(undefined);
 
   useEffect(() => {
     if (inView && idx >= posts.length - 4) {
@@ -33,6 +33,8 @@ export default function Image(props: {
     urlTimeoutRef.current = setTimeout(() => {
       setFileUrl(prev => prev.replace('us.', 'api-cdn.'));
     }, 1500);
+
+    return () => clearTimeout(urlTimeoutRef.current);
   }, [urlTimeoutRef]);
 
   if (fs) {
@@ -48,7 +50,7 @@ export default function Image(props: {
         alt={post.tags}
         src={fileUrl}
         id={`id_${String(post.id)}`}
-        onLoadedData={() => clearTimeout(urlTimeoutRef.current ?? undefined)}
+        onLoadedData={() => clearTimeout(urlTimeoutRef.current)}
       />
     );
   }
@@ -64,7 +66,7 @@ export default function Image(props: {
         onClick={onClick}
         id={`id_${String(post.id)}`}
         src={fileUrl}
-        onLoadedData={() => clearTimeout(urlTimeoutRef.current ?? undefined)}
+        onLoad={() => clearTimeout(urlTimeoutRef.current)}
       />
       {props.tags}
     </div>

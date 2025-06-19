@@ -37,7 +37,7 @@ export default function Video(props: {
     [ref, refPause],
   );
 
-  const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const urlTimeoutRef = useRef<NodeJS.Timeout>(undefined);
 
   useEffect(() => {
     if (!inViewPause && entryPause?.target instanceof HTMLVideoElement) {
@@ -72,9 +72,9 @@ export default function Video(props: {
         autoPlay
         controls={true}
         loop={true}
-        src={fileUrl.replace('api-cdn-mp4', 'us')}
+        src={fileUrl}
         onLoadedData={evt => {
-          clearTimeout(urlTimeoutRef.current ?? undefined);
+          clearTimeout(urlTimeoutRef.current);
           evt.currentTarget.focus();
           evt.currentTarget.volume = volume;
         }}
@@ -89,7 +89,7 @@ export default function Video(props: {
         }}
         ref={videoRef}
         onPlay={evt => {
-          clearTimeout(urlTimeoutRef.current ?? undefined);
+          clearTimeout(urlTimeoutRef.current);
           evt.currentTarget.focus();
           if (!played) {
             const reg = document.querySelector(`#post_${post.id}`);
