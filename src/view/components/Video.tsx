@@ -2,7 +2,6 @@ import { createRef, ReactNode, useCallback, useContext, useEffect, useRef, useSt
 import { useInView } from 'react-intersection-observer';
 
 import Post from '../../model/Post';
-
 import '../styles/R34Video.css';
 import { PostContext } from './Posts';
 
@@ -13,21 +12,24 @@ export default function Video(props: {
   idx: number;
   tags?: ReactNode;
 }) {
-  // Destructuring
-  const { onClick, post, fs, idx } = props;
+  const { onClick, post, fs, idx, tags } = props;
   const { isFs, posts, getMorePosts, volume, setVolume } = useContext(PostContext);
-  const [fileUrl, setFileUrl] = useState<string>(post.file_url.replace('api-cdn-mp4.', 'us.'));
+
+  const [played, setPlayed] = useState(false);
   const videoRef = createRef<HTMLVideoElement>();
 
-  const [played, setPlayed] = useState<boolean>(false);
+  const fallbackDomains = ['us.', 'nymp4.', 'ahrimp4', 'api-cdn-mp4.', ''];
+  const [domainIndex, setDomainIndex] = useState(0);
 
-  const [ref, inView] = useInView({
-    threshold: 0.6,
-  });
+  const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [refPause, inViewPause, entryPause] = useInView({
-    threshold: 0,
-  });
+  const getFileUrl = (domain: string) => {
+    return post.file_url.replace(/^(https?:\/\/)([^.]+\.)?/, `$1${domain}`);
+  };
+  const fileUrl = getFileUrl(fallbackDomains[domainIndex]);
+
+  const [ref, inView] = useInView({ threshold: 0.6 });
+  const [refPause, inViewPause, entryPause] = useInView({ threshold: 0 });
 
   const setRefs = useCallback(
     (node: HTMLVideoElement | null | undefined) => {
@@ -37,19 +39,11 @@ export default function Video(props: {
     [ref, refPause],
   );
 
-  const urlTimeoutRef = useRef<NodeJS.Timeout>(undefined);
-
   useEffect(() => {
     if (!inViewPause && entryPause?.target instanceof HTMLVideoElement) {
       entryPause.target.pause();
     }
   }, [inViewPause, entryPause]);
-
-  useEffect(() => {
-    urlTimeoutRef.current = setTimeout(() => {
-      setFileUrl(prev => prev.replace('us.', 'api-cdn-mp4.'));
-    }, 1500);
-  }, [urlTimeoutRef]);
 
   useEffect(() => {
     if (inView && idx >= posts.length - 4) {
@@ -60,48 +54,81 @@ export default function Video(props: {
   useEffect(() => {
     if (!isFs) {
       const media = document.querySelector('#fs_div > video');
-      if (media && media instanceof HTMLVideoElement) {
+      if (media instanceof HTMLVideoElement) {
         media.pause();
       }
     }
   }, [isFs]);
 
+  useEffect(() => {
+    return () => {
+      if (urlTimeoutRef.current) {
+        clearTimeout(urlTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleVideoError = () => {
+    if (urlTimeoutRef.current) {
+      clearTimeout(urlTimeoutRef.current);
+    }
+
+    if (domainIndex < fallbackDomains.length - 1) {
+      urlTimeoutRef.current = setTimeout(() => {
+        setDomainIndex(prev => prev + 1);
+      }, 500);
+    }
+  };
+
+  const handleVideoLoaded = () => {
+    if (urlTimeoutRef.current) {
+      clearTimeout(urlTimeoutRef.current);
+    }
+  };
+
+  const handleVolumeWheel = (e: React.WheelEvent<HTMLVideoElement>) => {
+    setVolume(prev => {
+      const newVol = Math.min(1, Math.max(0, prev - e.deltaY / 2000));
+      if (videoRef.current) {
+        videoRef.current.volume = newVol;
+      }
+      return newVol;
+    });
+  };
+
+  const handleVideoPlay = (evt: React.SyntheticEvent<HTMLVideoElement>) => {
+    if (urlTimeoutRef.current) {
+      clearTimeout(urlTimeoutRef.current);
+    }
+
+    evt.currentTarget.focus();
+
+    if (!played) {
+      const reg = document.querySelector(`#post_${post.id}`);
+      const otherVideo = reg?.querySelector('video') as HTMLVideoElement | null;
+
+      if (otherVideo) {
+        evt.currentTarget.currentTime = otherVideo.currentTime;
+      }
+
+      evt.currentTarget.volume = volume;
+      setPlayed(true);
+    }
+  };
+
   if (fs) {
     return (
       <video
         autoPlay
-        controls={true}
-        loop={true}
+        controls
+        loop
         src={fileUrl}
-        onLoadedData={evt => {
-          clearTimeout(urlTimeoutRef.current);
-          evt.currentTarget.focus();
-          evt.currentTarget.volume = volume;
-        }}
-        onWheel={e => {
-          setVolume(prev => {
-            prev = Math.min(1, Math.max(0, prev - e.deltaY / 2000));
-            if (videoRef.current) {
-              videoRef.current.volume = prev;
-            }
-            return prev;
-          });
-        }}
+        onLoadedData={handleVideoLoaded}
+        onCanPlay={handleVideoLoaded}
+        onError={handleVideoError}
+        onWheel={handleVolumeWheel}
         ref={videoRef}
-        onPlay={evt => {
-          clearTimeout(urlTimeoutRef.current);
-          evt.currentTarget.focus();
-          if (!played) {
-            const reg = document.querySelector(`#post_${post.id}`);
-            evt.currentTarget.volume = volume;
-
-            let video;
-            if (reg && (video = reg.querySelector('video'))) {
-              evt.currentTarget.currentTime = video.currentTime;
-            }
-            setPlayed(true);
-          }
-        }}
+        onPlay={handleVideoPlay}
       />
     );
   }
@@ -110,22 +137,21 @@ export default function Video(props: {
     <div className="r34video r34media" id={`post_${post.id}`}>
       <video
         poster={post.sample_url}
-        controls={true}
-        src={fileUrl.replace('api-cdn-mp4', 'us')}
-        onLoadedData={() => {
-          clearTimeout(urlTimeoutRef.current ?? undefined);
-        }}
+        controls
+        src={fileUrl}
+        onLoadedData={handleVideoLoaded}
         onClick={onClick}
         onPlay={evt => {
-          clearTimeout(urlTimeoutRef.current ?? undefined);
+          if (urlTimeoutRef.current) clearTimeout(urlTimeoutRef.current);
           if (!played) {
             evt.currentTarget.volume = 0.1;
             setPlayed(true);
           }
         }}
+        onError={handleVideoError}
         ref={setRefs}
       />
-      {!fs ? props.tags : null}
+      {!fs && tags}
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default class APIHandler {
   }
 
   public async getPosts(tags: Tag[], excludedTags: Tag[], page?: number): Promise<Post[]> {
-    const tagString: string = `${tags.length > 0 ? '+' : ''}${tags.map(tag => tag.name).join('+')}${excludedTags.length > 0 ? '+-' : ''}${excludedTags.map(tag => tag.name).join('+-')}`;
+    const tagString: string = `${tags.length > 0 ? '+' : ''}${tags.map(tag => encodeURIComponent(tag.name)).join('+')}${excludedTags.length > 0 ? '+-' : ''}${excludedTags.map(tag => tag.name).join('+-')}`;
     const raw = await this.fetch(`${APIHandler.postURL + tagString}&pid=${page ?? 0}`);
     try {
       const json = await raw.json();

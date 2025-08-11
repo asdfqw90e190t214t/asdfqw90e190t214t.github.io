@@ -91,7 +91,7 @@ export default class Post {
         post={this}
         tags={this.getTags(api, tags, excludedTags, handleTag)}
         fs={fs}
-        onClick={onClick ?? (() => {})}
+        onClick={onClick || (() => {})}
         idx={idx}
       />
     ) : (
@@ -99,7 +99,7 @@ export default class Post {
         key={this.id}
         post={this}
         fs={fs}
-        onClick={onClick ?? (() => {})}
+        onClick={onClick || (() => {})}
         tags={this.getTags(api, tags, excludedTags, handleTag)}
         idx={idx}
       />

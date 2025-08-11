@@ -5,7 +5,7 @@ import Tag from '../../model/Tag';
 
 import {
   Dispatch,
-  MutableRefObject,
+  RefObject,
   SetStateAction,
   createContext,
   useCallback,
@@ -27,7 +27,7 @@ export const PostContext = createContext<{
   setSuggestions: Dispatch<SetStateAction<Tag[]>>;
   suggestions: Tag[];
   posts: Post[];
-  fsRef?: MutableRefObject<HTMLDivElement>;
+  fsRef?: RefObject<HTMLDivElement>;
   isFs: boolean;
   setIsFs: Dispatch<SetStateAction<boolean>>;
   curPost: number;
