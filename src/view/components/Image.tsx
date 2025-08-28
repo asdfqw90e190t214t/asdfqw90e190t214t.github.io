@@ -47,12 +47,13 @@ export default function Image(props: {
         clearTimeout(urlTimeoutRef.current);
       }
     };
-  }, [inView, hasLoaded, domainIndex]);
+  }, [inView, hasLoaded, domainIndex, fallbackDomains.length]);
 
   const handleLoad = () => {
     if (urlTimeoutRef.current) {
       clearTimeout(urlTimeoutRef.current);
     }
+
     if (!hasLoaded) {
       setHasLoaded(true);
     }

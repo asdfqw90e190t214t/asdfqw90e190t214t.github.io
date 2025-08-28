@@ -6,8 +6,9 @@ import AppCache from './AppCache';
 
 export default class APIHandler {
   private static postURL: string =
-    'https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&limit=50&tags=';
-  private static tagURL: string = 'https://api.rule34.xxx/index.php?page=dapi&s=tag&q=index&name=';
+    'https://api.rule34.xxx/index.php?page=dapi&api_key=34c45c9c21e796888aa96242efb1f9360e135329b2b0a026d6b5112ec92147fc32cb102b2f80dc3decc5f51ebac2dc35fd14ef2cad88c2727213b5460dd5e25c&user_id=5273394&s=post&q=index&json=1&limit=50&tags=';
+  private static tagURL: string =
+    'https://api.rule34.xxx/index.php?page=dapi&api_key=34c45c9c21e796888aa96242efb1f9360e135329b2b0a026d6b5112ec92147fc32cb102b2f80dc3decc5f51ebac2dc35fd14ef2cad88c2727213b5460dd5e25c&user_id=5273394&s=tag&q=index&name=';
   private static autocompleteURL: string = 'https://api.rule34.xxx/autocomplete.php?q=';
   private static commentURL: string =
     'https://api.rule34.xxx/index.php?page=dapi&s=comment&q=index&post_id=';

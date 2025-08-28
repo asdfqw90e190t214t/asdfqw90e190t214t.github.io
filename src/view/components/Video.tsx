@@ -16,17 +16,8 @@ export default function Video(props: {
   const { isFs, posts, getMorePosts, volume, setVolume } = useContext(PostContext);
 
   const [played, setPlayed] = useState(false);
+  const fileUrl = post.file_url;
   const videoRef = createRef<HTMLVideoElement>();
-
-  const fallbackDomains = ['us.', 'nymp4.', 'ahrimp4', 'api-cdn-mp4.', ''];
-  const [domainIndex, setDomainIndex] = useState(0);
-
-  const urlTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const getFileUrl = (domain: string) => {
-    return post.file_url.replace(/^(https?:\/\/)([^.]+\.)?/, `$1${domain}`);
-  };
-  const fileUrl = getFileUrl(fallbackDomains[domainIndex]);
 
   const [ref, inView] = useInView({ threshold: 0.6 });
   const [refPause, inViewPause, entryPause] = useInView({ threshold: 0 });
@@ -60,32 +51,6 @@ export default function Video(props: {
     }
   }, [isFs]);
 
-  useEffect(() => {
-    return () => {
-      if (urlTimeoutRef.current) {
-        clearTimeout(urlTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const handleVideoError = () => {
-    if (urlTimeoutRef.current) {
-      clearTimeout(urlTimeoutRef.current);
-    }
-
-    if (domainIndex < fallbackDomains.length - 1) {
-      urlTimeoutRef.current = setTimeout(() => {
-        setDomainIndex(prev => prev + 1);
-      }, 500);
-    }
-  };
-
-  const handleVideoLoaded = () => {
-    if (urlTimeoutRef.current) {
-      clearTimeout(urlTimeoutRef.current);
-    }
-  };
-
   const handleVolumeWheel = (e: React.WheelEvent<HTMLVideoElement>) => {
     setVolume(prev => {
       const newVol = Math.min(1, Math.max(0, prev - e.deltaY / 2000));
@@ -97,10 +62,6 @@ export default function Video(props: {
   };
 
   const handleVideoPlay = (evt: React.SyntheticEvent<HTMLVideoElement>) => {
-    if (urlTimeoutRef.current) {
-      clearTimeout(urlTimeoutRef.current);
-    }
-
     evt.currentTarget.focus();
 
     if (!played) {
@@ -123,9 +84,6 @@ export default function Video(props: {
         controls
         loop
         src={fileUrl}
-        onLoadedData={handleVideoLoaded}
-        onCanPlay={handleVideoLoaded}
-        onError={handleVideoError}
         onWheel={handleVolumeWheel}
         ref={videoRef}
         onPlay={handleVideoPlay}
@@ -135,22 +93,7 @@ export default function Video(props: {
 
   return (
     <div className="r34video r34media" id={`post_${post.id}`}>
-      <video
-        poster={post.sample_url}
-        controls
-        src={fileUrl}
-        onLoadedData={handleVideoLoaded}
-        onClick={onClick}
-        onPlay={evt => {
-          if (urlTimeoutRef.current) clearTimeout(urlTimeoutRef.current);
-          if (!played) {
-            evt.currentTarget.volume = 0.1;
-            setPlayed(true);
-          }
-        }}
-        onError={handleVideoError}
-        ref={setRefs}
-      />
+      <video poster={post.sample_url} controls src={fileUrl} onClick={onClick} ref={setRefs} />
       {!fs && tags}
     </div>
   );
