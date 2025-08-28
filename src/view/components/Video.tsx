@@ -1,4 +1,4 @@
-import { createRef, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createRef, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Post from '../../model/Post';
