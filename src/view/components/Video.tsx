@@ -93,7 +93,7 @@ export default function Video(props: {
 
   return (
     <div className="r34video r34media" id={`post_${post.id}`}>
-      <video poster={post.sample_url} controls src={fileUrl} onClick={onClick} ref={setRefs} />
+      <video loop poster={post.sample_url} controls src={fileUrl} onClick={onClick} ref={setRefs} />
       {!fs && tags}
     </div>
   );
